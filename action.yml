@@ -1,0 +1,36 @@
+name: 'Bit setup'
+description: 'Reusable Github action to setup bit'
+inputs:
+  BIT_TOKEN:
+    description: 'The user token to connect to bit.dev'
+    required: true
+  no_warnings:
+    description: 'Whether to print warnings'
+    default: true
+  error_reporting:
+    description: 'Whether to report errors'
+    default: true
+  name:
+    description: 'User name for bit config'
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Bit config
+      run: |
+        bit config set interactive false
+        bit config set analytics_reporting false
+        bit config set anonymous_reporting false
+        bit config set user.token ${{ inputs.BIT_TOKEN }}
+        bit config set no_warnings ${{ inputs.no_warnings }}
+        bit config set error_reporting ${{ inputs.error_reporting }}
+        bit config set user.name ${{ inputs.name }}
+      shell: bash
+    - name: Config registry
+      run: |
+        npm config set @bit:registry https://node.bit.dev
+        npm config set @teambit:registry https://node.bit.dev
+      shell: bash
+    - name: Config npm
+      run: npm config set always-auth=true && npm config set //node.bit.dev/:_authToken\=${{ inputs.BIT_TOKEN }} && npm config list
+      shell: bash
