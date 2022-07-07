@@ -29,8 +29,8 @@ runs:
     - name: Config registry
       run: |
         npm config set @bit:registry https://node.bit.dev
-        npm config set @teambit:registry https://node-registry.bit.cloud
+        npm config set @teambit:registry https://node.bit.cloud
       shell: bash
     - name: Config npm
-      run: npm config set always-auth=true && npm config set //node-registry.bit.cloud/:_authToken\=${{ inputs.BIT_TOKEN }} && npm config list
+      run: npm config set always-auth=true && npm config set //node.bit.cloud/:_authToken\=${{ inputs.BIT_TOKEN }} && npm config list
       shell: bash
